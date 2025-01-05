@@ -11,20 +11,21 @@ db = SQLAlchemy()
 migrate = Migrate()
 jwt = JWTManager()
 mail = Mail()
-cors = CORS()
 
 def create_app(config_name='default'):
     app = Flask(__name__)
     
-    # Load config
+    # Load configuration from config object
     app.config.from_object(config[config_name])
     
-    # Initialize extensions with app
+    # Initialize extensions with the Flask app
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
     mail.init_app(app)
-    cors.init_app(app)
+    
+    # Enable CORS for API routes only
+    CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
     
     # Register blueprints
     from app.routes.auth import auth
@@ -33,16 +34,17 @@ def create_app(config_name='default'):
     from app.routes.reviews import reviews
     
     app.register_blueprint(auth, url_prefix='/api/auth')
-    app.register_blueprint(stamps, url_prefix='/api')
-    app.register_blueprint(orders, url_prefix='/api')
-    app.register_blueprint(reviews, url_prefix='/api')
+    app.register_blueprint(stamps, url_prefix='/api/stamps')
+    app.register_blueprint(orders, url_prefix='/api/orders')
+    app.register_blueprint(reviews, url_prefix='/api/reviews')
     
-    # Create database tables
-    with app.app_context():
-        db.create_all()
-    
+    # Health check route
     @app.route('/health')
     def health_check():
         return {'status': 'healthy'}, 200
-        
+    
+    # Ensure database tables are created (development only)
+    with app.app_context():
+        db.create_all()
+    
     return app

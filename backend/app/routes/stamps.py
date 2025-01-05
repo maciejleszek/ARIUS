@@ -6,11 +6,13 @@ from app import db
 
 stamps = Blueprint('stamps', __name__)
 
-@stamps.route('/stamps', methods=['GET'])
+# Get a paginated list of stamps
+@stamps.route('/', methods=['GET'])
 def get_stamps():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     
+    # Paginate the query
     stamps = Stamp.query.paginate(page=page, per_page=per_page, error_out=False)
     
     return jsonify({
@@ -28,11 +30,13 @@ def get_stamps():
         'current_page': stamps.page
     }), 200
 
-@stamps.route('/stamps/<int:stamp_id>', methods=['GET'])
+# Get details for a specific stamp
+@stamps.route('/<int:stamp_id>', methods=['GET'])
 def get_stamp(stamp_id):
     stamp = Stamp.query.get_or_404(stamp_id)
     reviews = Review.query.filter_by(stamp_id=stamp_id).all()
     
+    # Calculate average rating
     avg_rating = 0
     if reviews:
         avg_rating = sum(review.rating for review in reviews) / len(reviews)
@@ -50,15 +54,20 @@ def get_stamp(stamp_id):
         'reviews_count': len(reviews)
     }), 200
 
-@stamps.route('/stamps/<int:stamp_id>/reviews', methods=['POST'])
+# Add a review for a stamp
+@stamps.route('/<int:stamp_id>/reviews', methods=['POST'])
 @jwt_required()
 def add_review(stamp_id):
     current_user_id = get_jwt_identity()
     data = request.get_json()
     
-    # Check if user has bought this stamp
-    # This logic would need to be implemented based on your order system
+    # Check if user has purchased this stamp
+    # Example: Add your own logic based on your order model
+    # purchased = Order.query.filter_by(user_id=current_user_id, stamp_id=stamp_id).first()
+    # if not purchased:
+    #     return jsonify({'message': 'You must purchase this stamp before reviewing it'}), 403
     
+    # Add review
     review = Review(
         user_id=current_user_id,
         stamp_id=stamp_id,
@@ -71,7 +80,8 @@ def add_review(stamp_id):
     
     return jsonify({'message': 'Review added successfully'}), 201
 
-@stamps.route('/stamps/search', methods=['GET'])
+# Search for stamps by query, country, and price range
+@stamps.route('/search', methods=['GET'])
 def search_stamps():
     query = request.args.get('q', '')
     country = request.args.get('country', '')
@@ -80,18 +90,20 @@ def search_stamps():
     
     stamp_query = Stamp.query
     
+    # Filter by name or description
     if query:
         stamp_query = stamp_query.filter(
             (Stamp.name.ilike(f'%{query}%')) | 
             (Stamp.description.ilike(f'%{query}%'))
         )
     
+    # Filter by country
     if country:
         stamp_query = stamp_query.filter(Stamp.country == country)
         
+    # Filter by price range
     if min_price is not None:
         stamp_query = stamp_query.filter(Stamp.price >= min_price)
-        
     if max_price is not None:
         stamp_query = stamp_query.filter(Stamp.price <= max_price)
     
