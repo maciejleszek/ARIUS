@@ -17,7 +17,7 @@ with app.app_context():
             year_issued=2020,
             country="USA",
             quantity_available=200,
-            image_url="/assets/us.svg"
+            image_url="/assets/us.jpg"
         ),
         Coin(
             name="British Queen",
@@ -26,7 +26,7 @@ with app.app_context():
             year_issued=2019,
             country="UK",
             quantity_available=150,
-            image_url="/assets/british_queen.svg"
+            image_url="/assets/british_queen.jpg"
         ),
         Coin(
             name="Australian Kangaroo",
@@ -35,8 +35,35 @@ with app.app_context():
             year_issued=2018,
             country="Australia",
             quantity_available=120,
-            image_url="/assets/australian_kangaroo.svg"
-        )
+            image_url="/assets/australian_kangaroo.jpg"
+        ),
+        Coin(
+            name="Canadian Maple Leaf",
+            description="Canadian coin featuring a maple leaf.",
+            price=10.00,
+            year_issued=2021,
+            country="Canada",
+            quantity_available=180,
+            image_url="/assets/canadian_maple_leaf.jpg"
+        ),
+        Coin(
+            name="Chinese Panda",
+            description="Coin featuring a panda from China.",
+            price=15.00,
+            year_issued=2022,
+            country="China",
+            quantity_available=130,
+            image_url="/assets/chinese_panda.jpg"
+        ),
+        Coin(
+            name="Mexican Libertad",
+            description="Coin featuring the Angel of Independence from Mexico.",
+            price=9.00,
+            year_issued=2017,
+            country="Mexico",
+            quantity_available=100,
+            image_url="/assets/mexican_libertad.jpg"
+        ),
     ]
 
     # Dodaj znaczniki do bazy
