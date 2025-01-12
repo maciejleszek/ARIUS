@@ -10,6 +10,7 @@ const CoinDetail = () => {
   useEffect(() => {
     const fetchCoin = async () => {
       try {
+        console.log(`Pobieranie danych monety o ID: ${id}`);
         const response = await fetch(`http://localhost:5000/api/coins/${id}`);
         if (!response.ok) {
           throw new Error(`Błąd HTTP: ${response.status}`);

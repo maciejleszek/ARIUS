@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const CoinsContext = createContext();
 
-export const oinProvider = ({ children }) => {
+export const CoinsProvider = ({ children }) => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -34,4 +34,4 @@ export const oinProvider = ({ children }) => {
   );
 };
 
-export const useStamps = () => useContext(CoinsContext);
+export const useCoins = () => useContext(CoinsContext);
