@@ -18,33 +18,33 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (stamp) => {
+  const addToCart = (coin) => {
     setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === stamp.id);
+      const existingItem = prevItems.find(item => item.id === coin.id);
       if (existingItem) {
         return prevItems.map(item =>
-          item.id === stamp.id
+          item.id === coin.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
-      return [...prevItems, { ...stamp, quantity: 1 }];
+      return [...prevItems, { ...coin, quantity: 1 }];
     });
   };
 
-  const removeFromCart = (stampId) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== stampId));
+  const removeFromCart = (coinId) => {
+    setCartItems(prevItems => prevItems.filter(item => item.id !== coinId));
   };
 
-  const updateQuantity = (stampId, newQuantity) => {
+  const updateQuantity = (coinId, newQuantity) => {
     if (newQuantity < 1) {
-      removeFromCart(stampId);
+      removeFromCart(coinId);
       return;
     }
 
     setCartItems(prevItems =>
       prevItems.map(item =>
-        item.id === stampId
+        item.id === coinId
           ? { ...item, quantity: newQuantity }
           : item
       )

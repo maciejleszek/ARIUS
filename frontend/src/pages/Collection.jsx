@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import '../styles/main.css';
 
 const Collection = () => {
-  const [stamps, setStamps] = useState([]);
+  const [coins, setCoins] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/stamps')
+    fetch('http://localhost:5000/api/coins')
       .then((response) => {
         if (!response.ok) {
           console.error(`Server returned ${response.status}: ${response.statusText}`);
@@ -16,36 +16,36 @@ const Collection = () => {
       })
       .then((data) => {
         console.log('Fetched data:', data);
-        setStamps(data.stamps); // Adjust based on backend response structure
+        setCoins(data.coins); // Adjust based on backend response structure
       })
-      .catch((error) => console.error('Error fetching stamps:', error));
+      .catch((error) => console.error('Error fetching coins:', error));
   }, []);
 
   return (
     <div className="collection">
-      <h1 className="collection-title">Kolekcja znaczków</h1>
-      {stamps && stamps.length > 0 ? (
+      <h1 className="collection-title">Kolekcja monet</h1>
+      {coins && coins.length > 0 ? (
         <div className="collection-grid">
-          {stamps.map((stamp) => (
-            <div key={stamp.id} className="collection-item">
-              <Link to={`/stamps/${stamp.id}`} className="collection-item-link">
+          {coins.map((coin) => (
+            <div key={coin.id} className="collection-item">
+              <Link to={`/coins/${coin.id}`} className="collection-item-link">
                 <img
-                  src={stamp.image_url}
-                  alt={stamp.name}
+                  src={coin.image_url}
+                  alt={coin.name}
                   className="collection-item-image"
                 />
               </Link>
-              <h3 className="collection-item-name">{stamp.name}</h3>
-              <p className="collection-item-description">{stamp.description}</p>
-              <p className="collection-item-price">{stamp.price} zł</p>
-              <Link to={`/stamps/${stamp.id}`} className="collection-item-link">
+              <h3 className="collection-item-name">{coin.name}</h3>
+              <p className="collection-item-description">{coin.description}</p>
+              <p className="collection-item-price">{coin.price} zł</p>
+              <Link to={`/coins/${coin.id}`} className="collection-item-link">
                 Więcej informacji
               </Link>
             </div>
           ))}
         </div>
       ) : (
-        <p className="collection-empty">Nie znaleziono znaczków</p>
+        <p className="collection-empty">Nie znaleziono monet</p>
       )}
     </div>
   );

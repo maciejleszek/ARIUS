@@ -33,20 +33,20 @@ export async function login(credentials) {
     return apiRequest("auth/login", "POST", credentials);
 }
 
-// Stamps
-export async function getStamps() {
-    return apiRequest("stamps", "GET");
+// Coins
+export async function getCoins() {
+    return apiRequest("coins", "GET");
 }
 
-export async function getStampDetails(stampId) {
-    return apiRequest(`stamps/${stampId}`, "GET");
+export async function getCoinDetails(coinId) {
+    return apiRequest(`coins/${coinId}`, "GET");
 }
 
 // Cart
-export async function addToCart(stampId, token) {
-    return apiRequest("cart/add", "POST", { stampId }, token);
+export async function addToCart(coinId, token) {
+    return apiRequest("cart/add", "POST", { coinId }, token);
 }
 
-export async function removeFromCart(stampId, token) {
-    return apiRequest("cart/remove", "POST", { stampId }, token);
+export async function removeFromCart(coinId, token) {
+    return apiRequest("cart/remove", "POST", { coinId }, token);
 }

@@ -137,7 +137,7 @@
   background-color: #f0f0f0;
 }
 
-.home-stamps {
+.home-coins {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -219,8 +219,8 @@
   text-align: center;
 }
 
-/* StampDetail Styles */
-.stamp-detail-container {
+/* CoinDetail Styles */
+.coin-detail-container {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
@@ -230,26 +230,26 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.stamp-detail-container h1 {
+.coin-detail-container h1 {
   font-size: 28px;
   margin-bottom: 15px;
   text-align: center;
   color: #333;
 }
 
-.stamp-image {
+.coin-image {
   display: block;
   margin: 0 auto 20px auto;
   border: 1px solid #ddd;
   border-radius: 8px;
 }
 
-.stamp-detail-container p {
+.coin-detail-container p {
   font-size: 16px;
   color: #555;
   line-height: 1.6;
 }
 
-.stamp-detail-container p strong {
+.coin-detail-container p strong {
   color: #333;
 }

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-const StampDetail = () => {
+const CoinDetail = () => {
   const { id } = useParams(); // Pobranie ID z adresu URL
-  const [stamp, setStamp] = useState(null); // Dane szczegółowe znaczka
+  const [coin, setCoin] = useState(null); // Dane szczegółowe monety
   const [loading, setLoading] = useState(true); // Status ładowania
   const [error, setError] = useState(null); // Obsługa błędów
 
   useEffect(() => {
-    const fetchStamp = async () => {
+    const fetchCoin = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/stamps/${id}`);
+        const response = await fetch(`http://localhost:5000/api/coins/${id}`);
         if (!response.ok) {
           throw new Error(`Błąd HTTP: ${response.status}`);
         }
         const data = await response.json();
-        setStamp(data);
+        setCoin(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -23,7 +23,7 @@ const StampDetail = () => {
       }
     };
 
-    fetchStamp();
+    fetchCoin();
   }, [id]);
 
   if (loading) {
@@ -34,37 +34,37 @@ const StampDetail = () => {
     return <div className="text-center text-red-500 py-8">Błąd: {error}</div>;
   }
 
-  if (!stamp) {
-    return <div className="text-center py-8">Nie znaleziono znaczka</div>;
+  if (!coin) {
+    return <div className="text-center py-8">Nie znaleziono monety</div>;
   }
 
   return (
-    <div className="stamp-detail-container">
-      <h1 className="stamp-name">{stamp.name}</h1>
+    <div className="coin-detail-container">
+      <h1 className="coin-name">{coin.name}</h1>
       <img
-        src={stamp.image_url}
-        alt={stamp.name}
-        className="stamp-image"
+        src={coin.image_url}
+        alt={coin.name}
+        className="coin-image"
         style={{ width: '100%', maxHeight: '300px', objectFit: 'contain' }}
       />
-      <p>{stamp.description}</p>
+      <p>{coin.description}</p>
       <p>
-        <strong>Kraj:</strong> {stamp.country}
+        <strong>Kraj:</strong> {coin.country}
       </p>
       <p>
-        <strong>Rok wydania:</strong> {stamp.year_issued}
+        <strong>Rok wydania:</strong> {coin.year_issued}
       </p>
       <p>
-        <strong>Cena:</strong> {stamp.price} zł
+        <strong>Cena:</strong> {coin.price} zł
       </p>
       <p>
-        <strong>Ilość dostępna:</strong> {stamp.quantity_available}
+        <strong>Ilość dostępna:</strong> {coin.quantity_available}
       </p>
       <p>
-        <strong>Średnia ocena:</strong> {stamp.average_rating} (na podstawie {stamp.reviews_count} recenzji)
+        <strong>Średnia ocena:</strong> {coin.average_rating} (na podstawie {coin.reviews_count} recenzji)
       </p>
     </div>
   );
 };
 
-export default StampDetail;
+export default CoinDetail;
