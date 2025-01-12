@@ -7,30 +7,30 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Sprawdź token przy starcie
     const token = localStorage.getItem('token');
     if (token) {
-      // Tutaj możesz dodać weryfikację tokenu z backendem
       const userData = JSON.parse(localStorage.getItem('user'));
       setUser(userData);
     }
     setLoading(false);
   }, []);
 
-  const login = async (email, password) => {
+  const login = async ({ email, password }) => {
     try {
       const response = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-      
+
       if (!response.ok) {
-        throw new Error('Błąd logowania');
+        const errorData = await response.json();
+        console.error('Błąd logowania:', errorData.error || 'Nieznany błąd');
+        return false;
       }
 
       const data = await response.json();
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('token', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
       return true;
@@ -40,24 +40,27 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (email, password) => {
+  const register = async ({ email, name, password }) => {
     try {
       const response = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, name, password }),
       });
-
+  
       if (!response.ok) {
-        throw new Error('Błąd rejestracji');
+        const errorData = await response.json();
+        console.error('Błąd rejestracji:', errorData.error || 'Nieznany błąd');
+        return false;
       }
-
+  
       return true;
     } catch (error) {
       console.error('Register error:', error);
       return false;
     }
   };
+  
 
   const logout = () => {
     localStorage.removeItem('token');
