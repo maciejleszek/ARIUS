@@ -1,7 +1,7 @@
 # app/routes/orders.py
 from flask import Blueprint, request, jsonify
 from app.models.order import Order, OrderItem
-from app.models.stamp import Stamp
+from app.models.coin import Coin
 # from app.services.email_service import send_order_confirmation
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
@@ -14,10 +14,10 @@ def add_to_cart():
     current_user_id = get_jwt_identity()
     data = request.get_json()
     
-    stamp = Stamp.query.get_or_404(data['stamp_id'])
+    coin = Coin.query.get_or_404(data['coin_id'])
     
-    if stamp.quantity_available < data['quantity']:
-        return jsonify({'error': 'Not enough stamps in stock'}), 400
+    if coin.quantity_available < data['quantity']:
+        return jsonify({'error': 'Not enough coins in stock'}), 400
     
     # Find or create pending order (cart)
     cart = Order.query.filter_by(
@@ -33,7 +33,7 @@ def add_to_cart():
     # Check if item already in cart
     cart_item = OrderItem.query.filter_by(
         order_id=cart.id,
-        stamp_id=stamp.id
+        coin_id=coin.id
     ).first()
     
     if cart_item:
@@ -41,9 +41,9 @@ def add_to_cart():
     else:
         cart_item = OrderItem(
             order_id=cart.id,
-            stamp_id=stamp.id,
+            coin_id=coin.id,
             quantity=data['quantity'],
-            price_at_time=stamp.price
+            price_at_time=coin.price
         )
         db.session.add(cart_item)
     
@@ -81,8 +81,8 @@ def get_cart():
     
     items = [{
         'id': item.id,
-        'stamp_id': item.stamp_id,
-        'stamp_name': item.stamp.name,
+        'coin_id': item.coin_id,
+        'coin_name': item.coin.name,
         'quantity': item.quantity,
         'price': item.price_at_time,
         'subtotal': item.quantity * item.price_at_time
@@ -110,10 +110,10 @@ def get_cart():
 #     # Update order status
 #     cart.status = 'paid'
     
-#     # Update stamp quantities
+#     # Update coin quantities
 #     for item in cart.items:
-#         stamp = item.stamp
-#         stamp.quantity_available -= item.quantity
+#         coin = item.coin
+#         coin.quantity_available -= item.quantity
     
 #     db.session.commit()
     
@@ -137,7 +137,7 @@ def get_orders():
             'created_at': order.created_at.isoformat(),
             'total_amount': sum(item.quantity * item.price_at_time for item in order.items),
             'items': [{
-                'stamp_name': item.stamp.name,
+                'coin_name': item.coin.name,
                 'quantity': item.quantity,
                 'price': item.price_at_time
             } for item in order.items]

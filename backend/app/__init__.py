@@ -29,12 +29,12 @@ def create_app(config_name='default'):
     
     # Register blueprints
     from app.routes.auth import auth
-    from app.routes.stamps import stamps
+    from app.routes.coins import coins
     from app.routes.orders import orders
     from app.routes.reviews import reviews
     
     app.register_blueprint(auth, url_prefix='/api/auth')
-    app.register_blueprint(stamps, url_prefix='/api/stamps')
+    app.register_blueprint(coins, url_prefix='/api/coins')
     app.register_blueprint(orders, url_prefix='/api/orders')
     app.register_blueprint(reviews, url_prefix='/api/reviews')
     

@@ -1,7 +1,7 @@
 from app import create_app
 from app import db
 from app.models.user import User
-from app.models.stamp import Stamp
+from app.models.coin import Coin
 from app.models.order import Order, OrderItem
 from app.models.review import Review
 
@@ -12,7 +12,7 @@ def make_shell_context():
     return {
         'db': db,
         'User': User,
-        'Stamp': Stamp,
+        'Coin': Coin,
         'Order': Order,
         'OrderItem': OrderItem,
         'Review': Review

@@ -12,7 +12,7 @@ def add_shop_review():
     data = request.get_json()
     
     # Verify user has made a purchase
-    user_has_orders = True  # Implement actual check based on your Order model
+    user_has_orders = True
     
     if not user_has_orders:
         return jsonify({'error': 'Must make a purchase before reviewing'}), 403
@@ -20,7 +20,7 @@ def add_shop_review():
     # Check if user already reviewed
     existing_review = Review.query.filter_by(
         user_id=current_user_id,
-        stamp_id=None  # Shop review has no stamp_id
+        coin_id=None  # Shop review has no coin_id
     ).first()
     
     if existing_review:
@@ -42,7 +42,7 @@ def get_shop_reviews():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     
-    reviews = Review.query.filter_by(stamp_id=None).paginate(
+    reviews = Review.query.filter_by(coin_id=None).paginate(
         page=page,
         per_page=per_page,
         error_out=False

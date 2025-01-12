@@ -13,6 +13,6 @@ class Order(db.Model):
 class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
-    stamp_id = db.Column(db.Integer, db.ForeignKey('stamp.id'), nullable=False)
+    coin_id = db.Column(db.Integer, db.ForeignKey('coin.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price_at_time = db.Column(db.Float, nullable=False)
